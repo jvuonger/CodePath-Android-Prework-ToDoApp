@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE = 20;
-    ArrayList<String> toDoItems;
+    ArrayList<String> toDoItems = new ArrayList<String>();
     ArrayAdapter<String> aToDoAdapter;
     ListView lvItems;
     EditText etEditText;
