@@ -20,15 +20,19 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE = 20;
-    ArrayList<String> toDoItems = new ArrayList<String>();
-    ArrayAdapter<String> aToDoAdapter;
+    ArrayList<ToDoItem> toDoItems = new ArrayList<ToDoItem>();
+    ToDoItemAdapter aToDoAdapter;
     ListView lvItems;
     EditText etEditText;
+    ToDoItemDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = ToDoItemDatabase.getInstance(this);
+
         populateArrayItems();
         lvItems = (ListView) findViewById(R.id.lvItems);
         lvItems.setAdapter(aToDoAdapter);
@@ -46,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                db.deleteToDoItem((ToDoItem) view.getTag());
                 toDoItems.remove(position);
                 aToDoAdapter.notifyDataSetChanged();
-                writeItems();
                 return true;
             }
         });
@@ -60,52 +64,41 @@ public class MainActivity extends AppCompatActivity {
         // REQUEST_CODE is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Extract name value from result extras
-            String item = data.getExtras().getString("updatedItem");
+            int itemId = data.getExtras().getInt("updatedItemId");
             int itemPosition = data.getExtras().getInt("updatedItemPosition");
 
             //update item name and save
-            toDoItems.set(itemPosition, item);
+            toDoItems.set(itemPosition, db.getToDoItemById(itemId));
             aToDoAdapter.notifyDataSetChanged();
-            writeItems();
         }
     }
 
     public void populateArrayItems() {
-        readItems();
-        aToDoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, toDoItems);
-    }
-
-    private void readItems() {
-        File fileDir = getFilesDir();
-        File file = new File(fileDir, "todo.txt");
-        try {
-            toDoItems = new ArrayList<String>(FileUtils.readLines(file));
-        } catch (IOException e) {
-
-        }
-    }
-
-    private void writeItems() {
-        File fileDir = getFilesDir();
-        File file = new File(fileDir, "todo.txt");
-        try {
-            FileUtils.writeLines(file, toDoItems);
-        } catch (IOException e) {
-
-        }
+        toDoItems = db.getAllToDoItems();
+        aToDoAdapter = new ToDoItemAdapter(this,toDoItems);
     }
 
     public void onAddItem(View view) {
         etEditText = (EditText) findViewById(R.id.etEditText);
-        aToDoAdapter.add(etEditText.getText().toString());
+
+        ToDoItem newToDoItem = new ToDoItem();
+        newToDoItem.setToDoItem(etEditText.getText().toString());
+        newToDoItem.setToDoId((int) db.addToDoItem(newToDoItem));
+        aToDoAdapter.add(newToDoItem);
+        aToDoAdapter.notifyDataSetChanged();
+
         etEditText.setText("");
-        writeItems();
     }
 
     public void launchEditItemView(int itemPosition) {
         Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-        i.putExtra("item", lvItems.getItemAtPosition(itemPosition).toString());
+
+        ToDoItem item = (ToDoItem) lvItems.getItemAtPosition(itemPosition);
+
+        i.putExtra("item", item.getToDoItem());
+        i.putExtra("itemId", item.getToDoId());
         i.putExtra("itemPosition", itemPosition);
+
         startActivityForResult(i, REQUEST_CODE);
     }
 }
