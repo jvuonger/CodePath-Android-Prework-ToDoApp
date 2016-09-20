@@ -10,6 +10,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import java.util.Calendar;
 
@@ -20,11 +22,15 @@ import java.util.Calendar;
 public class EditToDoItemDiaglogFragment extends DialogFragment {
 
     ToDoItemDatabase db;
+    View rootView;
     ToDoItem itemToEdit;
     EditText etEditItemText;
     DatePicker dpDueDate;
+    RadioGroup rgPriority;
+
     int itemId;
     int itemPosition;
+
     EditToDoItemDiaglogListener listener;
 
     // Defines the listener interface with a method passing back data result
@@ -53,7 +59,7 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
         itemId = getArguments().getInt("id");
         itemPosition = getArguments().getInt("position");
 
-        View rootView = inflater.inflate(R.layout.fragment_edit_item, container, false);
+        rootView = inflater.inflate(R.layout.fragment_edit_item, container, false);
 
         etEditItemText = (EditText) rootView.findViewById(R.id.etEditItemText);
 
@@ -61,12 +67,12 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
         db = ToDoItemDatabase.getInstance(rootView.getContext());
         itemToEdit = db.getToDoItemById(itemId);
 
-        // Edit To Do Item Name
+        // Set To Do Item Name
         etEditItemText = (EditText) rootView.findViewById(R.id.etEditItemText);
         etEditItemText.setText(itemToEdit.getToDoItem());
         etEditItemText.setSelection(etEditItemText.getText().length());
 
-        // Edit Due Date
+        // Set Due Date
         dpDueDate = (DatePicker) rootView.findViewById(R.id.dpDueDate);
         final Calendar c = itemToEdit.getDueDateForDatePicker();
         int year = c.get(Calendar.YEAR);
@@ -74,7 +80,12 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
         int day = c.get(Calendar.DAY_OF_MONTH);
         dpDueDate.updateDate(year, month, day);
 
-
+        // Set RadioGroup
+        rgPriority = (RadioGroup) rootView.findViewById(R.id.rgPriorityOptions);
+        int selectedRadioButton = getSelectedPriority(itemToEdit.getPriority());
+        if (selectedRadioButton > 0) {
+            ((RadioButton) rootView.findViewById(selectedRadioButton)).setChecked(true);
+        }
 
         // Attach Events to buttons
         Button btnSaveButton = (Button) rootView.findViewById(R.id.btnSaveEditItem);
@@ -120,6 +131,7 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
 
     private void saveToDoItem() {
 
+        // To do item
         itemToEdit.setToDoItem(etEditItemText.getText().toString());
 
         // Get date object from date picker
@@ -132,6 +144,20 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
 
         itemToEdit.setDueDate(calendar.getTime());
 
+        // Priority
+        itemToEdit.setPriority(
+                ((RadioButton) rootView.findViewById(rgPriority.getCheckedRadioButtonId())).getText().toString()
+        );
+
         db.updateToDoItem(itemToEdit);
+    }
+
+    private int getSelectedPriority(String priority) {
+        switch(priority.toLowerCase()) {
+            case "low": return R.id.rbLowPriority;
+            case "medium":return R.id.rbMediumPriority;
+            case "high": return R.id.rbHighPriority;
+            default: return -1;
+        }
     }
 }

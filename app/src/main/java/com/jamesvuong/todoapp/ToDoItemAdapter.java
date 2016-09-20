@@ -1,6 +1,8 @@
 package com.jamesvuong.todoapp;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+
+import static android.R.attr.priority;
 
 /**
  * Created by jvuonger on 9/17/16.
@@ -39,12 +43,16 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
         // Populate the data into the template view using the data object
         tvToDoItem.setText(toDoItem.getToDoItem());
         tvDueDate.setText(getDateForView(toDoItem.getDueDateTime()));
-        tvPriority.setText("");
+        tvPriority.setText(toDoItem.getPriority());
+
+        // Style Priority Text
+        stylePriorityText(convertView.getContext(), tvPriority);
+
         // Return the completed view to render on screen
         return convertView;
     }
 
-    public String getDateForView(long time) {
+    private String getDateForView(long time) {
         if (time == -1 ) return "";
 
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -52,6 +60,22 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
         String date = DateFormat.format("MM-dd-yyyy", cal).toString();
 
         return date;
+    }
+
+    private void stylePriorityText(Context context, TextView tvPriority) {
+        int textColor = R.color.lowPriority;
+        switch(tvPriority.getText().toString().toLowerCase()) {
+            case "medium":
+                textColor = R.color.mediumPriority;
+                break;
+            case "high":
+                textColor = R.color.highPriority;
+                break;
+            default:
+                break;
+        }
+
+        tvPriority.setTextColor(ContextCompat.getColor(context, textColor));
     }
 
 }
