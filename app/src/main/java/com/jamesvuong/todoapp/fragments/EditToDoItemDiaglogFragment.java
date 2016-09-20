@@ -1,4 +1,4 @@
-package com.jamesvuong.todoapp;
+package com.jamesvuong.todoapp.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -12,6 +12,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.jamesvuong.todoapp.R;
+import com.jamesvuong.todoapp.models.ToDoItem;
+import com.jamesvuong.todoapp.data.ToDoItemDbHelper;
 
 import java.util.Calendar;
 

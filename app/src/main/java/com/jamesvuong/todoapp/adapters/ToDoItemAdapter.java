@@ -1,21 +1,20 @@
-package com.jamesvuong.todoapp;
+package com.jamesvuong.todoapp.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.jamesvuong.todoapp.R;
+import com.jamesvuong.todoapp.models.ToDoItem;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
-import static android.R.attr.priority;
 
 /**
  * Created by jvuonger on 9/17/16.

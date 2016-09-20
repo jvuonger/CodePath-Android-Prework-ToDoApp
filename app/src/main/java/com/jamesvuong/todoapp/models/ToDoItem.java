@@ -1,4 +1,4 @@
-package com.jamesvuong.todoapp;
+package com.jamesvuong.todoapp.models;
 
 import java.util.Calendar;
 import java.util.Date;

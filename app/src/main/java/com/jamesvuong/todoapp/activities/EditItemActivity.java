@@ -1,4 +1,4 @@
-package com.jamesvuong.todoapp;
+package com.jamesvuong.todoapp.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
+import com.jamesvuong.todoapp.R;
+import com.jamesvuong.todoapp.models.ToDoItem;
+import com.jamesvuong.todoapp.data.ToDoItemDbHelper;
 
 import java.util.Calendar;
 
