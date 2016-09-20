@@ -35,9 +35,11 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
         // Lookup view for data population
         TextView tvToDoItem = (TextView) convertView.findViewById(R.id.tvToDoItemText);
         TextView tvDueDate = (TextView) convertView.findViewById(R.id.tvDueDate);
+        TextView tvPriority = (TextView) convertView.findViewById(R.id.tvPriority);
         // Populate the data into the template view using the data object
         tvToDoItem.setText(toDoItem.getToDoItem());
         tvDueDate.setText(getDateForView(toDoItem.getDueDateTime()));
+        tvPriority.setText("");
         // Return the completed view to render on screen
         return convertView;
     }
