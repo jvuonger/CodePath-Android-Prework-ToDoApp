@@ -1,5 +1,6 @@
 package com.jamesvuong.todoapp;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,14 +18,22 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import static android.R.attr.data;
 
-    private final int REQUEST_CODE = 20;
+public class MainActivity extends AppCompatActivity implements EditToDoItemDiaglogFragment.EditToDoItemDiaglogListener{
+    final String TAG = "MainActivity";
     ArrayList<ToDoItem> toDoItems = new ArrayList<ToDoItem>();
     ToDoItemAdapter aToDoAdapter;
     ListView lvItems;
     EditText etEditText;
     ToDoItemDatabase db;
+
+    @Override
+    public void onFinishEditDialog(int itemPosition, ToDoItem item) {
+        //update item name and save
+        toDoItems.set(itemPosition, db.getToDoItemById(item.getToDoId()));
+        aToDoAdapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                launchEditItemView(position);
+                launchEditItemView(position, (ToDoItem) view.getTag());
             }
         });
 
@@ -57,20 +66,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            // Extract name value from result extras
-            int itemId = data.getExtras().getInt("updatedItemId");
-            int itemPosition = data.getExtras().getInt("updatedItemPosition");
-
-            //update item name and save
-            toDoItems.set(itemPosition, db.getToDoItemById(itemId));
-            aToDoAdapter.notifyDataSetChanged();
-        }
     }
 
     public void populateArrayItems() {
@@ -90,15 +85,9 @@ public class MainActivity extends AppCompatActivity {
         etEditText.setText("");
     }
 
-    public void launchEditItemView(int itemPosition) {
-        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-
-        ToDoItem item = (ToDoItem) lvItems.getItemAtPosition(itemPosition);
-
-        i.putExtra("item", item.getToDoItem());
-        i.putExtra("itemId", item.getToDoId());
-        i.putExtra("itemPosition", itemPosition);
-
-        startActivityForResult(i, REQUEST_CODE);
+    public void launchEditItemView(int itemPosition, ToDoItem item) {
+        FragmentManager fm = getFragmentManager();
+        EditToDoItemDiaglogFragment dialogFragment = EditToDoItemDiaglogFragment.newInstance(itemPosition, item);
+        dialogFragment.show(fm, "Edit To Do Item Dialog Fragment");
     }
 }
