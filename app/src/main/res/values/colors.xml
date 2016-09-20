@@ -6,4 +6,6 @@
     <color name="lowPriority">#46AF4A</color>
     <color name="mediumPriority">#FF9800</color>
     <color name="highPriority">#F6402C</color>
+    <color name="saveButton">#3F51B5</color>
+    <color name="cancelButton">#bf2817</color>
 </resources>

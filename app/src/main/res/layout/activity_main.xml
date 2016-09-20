@@ -5,16 +5,6 @@
     android:layout_height="match_parent"
     tools:context="com.jamesvuong.todoapp.MainActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add"
-        android:id="@+id/btnAddButton"
-        android:onClick="onAddItem"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,6 +14,17 @@
         android:layout_above="@+id/btnAddButton"
         android:layout_alignParentTop="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add"
+        android:id="@+id/btnAddButton"
+        android:onClick="onAddItem"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"/>
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,6 +32,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_margin="10dp"
         android:layout_toLeftOf="@+id/btnAddButton"
         android:layout_toStartOf="@+id/btnAddButton"
         android:hint="@string/add_item" />

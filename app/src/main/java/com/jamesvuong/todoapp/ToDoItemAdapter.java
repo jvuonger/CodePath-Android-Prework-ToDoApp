@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -57,7 +58,9 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
 
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);
-        String date = DateFormat.format("MM-dd-yyyy", cal).toString();
+
+        SimpleDateFormat fmtOut = new SimpleDateFormat("MMM dd, yyyy");
+        String date = "Due: " + fmtOut.format(cal.getTime());
 
         return date;
     }
