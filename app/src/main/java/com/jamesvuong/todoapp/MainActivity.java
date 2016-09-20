@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements EditToDoItemDiagl
     ToDoItemAdapter aToDoAdapter;
     ListView lvItems;
     EditText etEditText;
-    ToDoItemDatabase db;
+    ToDoItemDbHelper db;
 
     @Override
     public void onFinishEditDialog(int itemPosition, ToDoItem item) {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements EditToDoItemDiagl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = ToDoItemDatabase.getInstance(this);
+        db = ToDoItemDbHelper.getInstance(this);
 
         populateArrayItems();
         lvItems = (ListView) findViewById(R.id.lvItems);

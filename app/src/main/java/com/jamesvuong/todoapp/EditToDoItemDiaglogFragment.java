@@ -21,7 +21,7 @@ import java.util.Calendar;
 
 public class EditToDoItemDiaglogFragment extends DialogFragment {
 
-    ToDoItemDatabase db;
+    ToDoItemDbHelper db;
     View rootView;
     ToDoItem itemToEdit;
     EditText etEditItemText;
@@ -64,7 +64,7 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
         etEditItemText = (EditText) rootView.findViewById(R.id.etEditItemText);
 
         // Get Item from SQL Lite database
-        db = ToDoItemDatabase.getInstance(rootView.getContext());
+        db = ToDoItemDbHelper.getInstance(rootView.getContext());
         itemToEdit = db.getToDoItemById(itemId);
 
         // Set To Do Item Name

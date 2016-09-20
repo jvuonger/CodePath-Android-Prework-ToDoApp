@@ -10,7 +10,7 @@ import android.widget.EditText;
 import java.util.Calendar;
 
 public class EditItemActivity extends AppCompatActivity {
-    ToDoItemDatabase db;
+    ToDoItemDbHelper db;
     ToDoItem itemToEdit;
     EditText etEditItemText;
     DatePicker dpDueDate;
@@ -24,7 +24,7 @@ public class EditItemActivity extends AppCompatActivity {
         itemId = getIntent().getIntExtra("itemId",-1);
 
         // Get Item from SQL Lite database
-        db = ToDoItemDatabase.getInstance(this);
+        db = ToDoItemDbHelper.getInstance(this);
         itemToEdit = db.getToDoItemById(itemId);
 
         // Edit To Do Item Name

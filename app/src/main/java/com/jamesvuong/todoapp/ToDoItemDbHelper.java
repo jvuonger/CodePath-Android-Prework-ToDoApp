@@ -13,11 +13,11 @@ import java.util.Date;
 /**
  * Created by jvuonger on 9/19/16.
  */
-public class ToDoItemDatabase extends SQLiteOpenHelper {
+public class ToDoItemDbHelper extends SQLiteOpenHelper {
     private static final String TAG = "ToDoItemDatabase";
 
     // Singleton
-    private static ToDoItemDatabase sInstance;
+    private static ToDoItemDbHelper sInstance;
 
     // Database Info
     private static final String DATABASE_NAME = "toDoDatabase";
@@ -33,17 +33,17 @@ public class ToDoItemDatabase extends SQLiteOpenHelper {
     private static final String KEY_TODOITEM_PRIORITY = "priority";
 
     // Singleton Method
-    public static synchronized ToDoItemDatabase getInstance(Context context) {
+    public static synchronized ToDoItemDbHelper getInstance(Context context) {
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (sInstance == null) {
-            sInstance = new ToDoItemDatabase(context.getApplicationContext());
+            sInstance = new ToDoItemDbHelper(context.getApplicationContext());
         }
         return sInstance;
     }
 
-    public ToDoItemDatabase (Context context) {
+    public ToDoItemDbHelper (Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
