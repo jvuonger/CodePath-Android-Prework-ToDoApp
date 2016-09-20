@@ -1,23 +1,17 @@
 package com.jamesvuong.todoapp;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import java.util.Calendar;
-
-import static android.app.Activity.RESULT_OK;
-import static com.jamesvuong.todoapp.R.id.dismiss;
-import static com.jamesvuong.todoapp.R.id.dpDueDate;
-import static com.jamesvuong.todoapp.R.id.etEditItemText;
-import static com.jamesvuong.todoapp.R.string.save;
 
 /**
  * Created by jvuonger on 9/19/16.
@@ -33,12 +27,13 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
     int itemPosition;
     EditToDoItemDiaglogListener listener;
 
-    // 1. Defines the listener interface with a method passing back data result.
+    // Defines the listener interface with a method passing back data result
     public interface EditToDoItemDiaglogListener {
         void onFinishEditDialog(int itemPosition, ToDoItem item);
     }
 
-    static EditToDoItemDiaglogFragment newInstance(int position, ToDoItem item) {
+    // Create a new instance of the DialogFragment
+    public static EditToDoItemDiaglogFragment newInstance(int position, ToDoItem item) {
         EditToDoItemDiaglogFragment f = new EditToDoItemDiaglogFragment();
 
         Bundle args = new Bundle();
@@ -53,11 +48,11 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Initialize variables
         listener = (EditToDoItemDiaglogListener) getActivity();
         itemId = getArguments().getInt("id");
         itemPosition = getArguments().getInt("position");
 
-        //return super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_edit_item, container, false);
 
         etEditItemText = (EditText) rootView.findViewById(R.id.etEditItemText);
@@ -80,8 +75,8 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
         dpDueDate.updateDate(year, month, day);
 
 
-        getDialog().setTitle("Edit To Do Item");
 
+        // Attach Events to buttons
         Button btnSaveButton = (Button) rootView.findViewById(R.id.btnSaveEditItem);
         btnSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +99,27 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
         return rootView;
     }
 
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        // request a window without the title
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
+
+    @Override
+    public void onResume() {
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+
+        super.onResume();
+    }
+
     private void saveToDoItem() {
+
         itemToEdit.setToDoItem(etEditItemText.getText().toString());
 
         // Get date object from date picker
@@ -118,6 +133,5 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
         itemToEdit.setDueDate(calendar.getTime());
 
         db.updateToDoItem(itemToEdit);
-
     }
 }

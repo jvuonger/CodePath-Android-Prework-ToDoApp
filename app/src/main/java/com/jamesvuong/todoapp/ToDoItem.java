@@ -64,7 +64,6 @@ public class ToDoItem {
 
     public Calendar getDueDateForDatePicker() {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
 
         if( mDueDate != null ) {
             cal.setTime(mDueDate);
