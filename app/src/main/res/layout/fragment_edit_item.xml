@@ -35,6 +35,13 @@
         android:datePickerMode="spinner"
         android:calendarViewShown="false"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/edit_priority_header"
+        android:id="@+id/tvPriorityHeader" />
+
     <RadioGroup
         android:id="@+id/rgPriorityOptions"
         android:layout_width="match_parent"
