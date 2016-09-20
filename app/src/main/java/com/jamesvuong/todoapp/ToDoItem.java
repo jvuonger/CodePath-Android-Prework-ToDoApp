@@ -10,6 +10,7 @@ public class ToDoItem {
     private int mToDoId;
     private String mToDoItem;
     private Date mDueDate;
+    private String mPriority;
 
     public ToDoItem() {
         mToDoItem = "";
@@ -26,6 +27,13 @@ public class ToDoItem {
         mDueDate = dueDate;
     }
 
+    // To Do Items with a Due Date
+    public ToDoItem(String toDoItem, Date dueDate, String priority) {
+        mToDoItem = toDoItem;
+        mDueDate = dueDate;
+        mPriority = priority;
+    }
+
     public void setToDoId(int id) {
         mToDoId = id;
     }
@@ -36,6 +44,10 @@ public class ToDoItem {
 
     public void setDueDate(Date dueDate) {
         mDueDate = dueDate;
+    }
+
+    public void setPriority(String priority) {
+        mPriority = priority;
     }
 
     public int getToDoId() {
@@ -70,5 +82,10 @@ public class ToDoItem {
         }
 
         return cal;
+    }
+
+    public String getPriority() {
+        if (mPriority == null) return "";
+        return mPriority;
     }
 }
