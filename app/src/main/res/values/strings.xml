@@ -5,6 +5,6 @@
     <string name="save">Save</string>
     <string name="edit_item_header">Edit Item Below:</string>
     <string name="due_date_header">Set Due Date:</string>
-    <string name="edit_due_date_header">Edit Due Date:</string>
+    <string name="edit_due_date_header">Due Date:</string>
     <string name="edit_priority_header">Priority:</string>
 </resources>

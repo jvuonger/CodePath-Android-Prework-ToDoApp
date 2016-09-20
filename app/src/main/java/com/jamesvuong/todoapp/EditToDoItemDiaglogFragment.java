@@ -74,11 +74,15 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
 
         // Set Due Date
         dpDueDate = (DatePicker) rootView.findViewById(R.id.dpDueDate);
-        final Calendar c = itemToEdit.getDueDateForDatePicker();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        dpDueDate.updateDate(year, month, day);
+
+        Calendar c = Calendar.getInstance();
+        if (itemToEdit.getDueDateTime() > 0) {
+            c = itemToEdit.getDueDateForDatePicker();
+            dpDueDate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        } else {
+            dpDueDate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+            dpDueDate.setMinDate(c.getTimeInMillis()); // Set min due date to today
+        }
 
         // Set RadioGroup
         rgPriority = (RadioGroup) rootView.findViewById(R.id.rgPriorityOptions);
@@ -145,9 +149,11 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
         itemToEdit.setDueDate(calendar.getTime());
 
         // Priority
-        itemToEdit.setPriority(
-                ((RadioButton) rootView.findViewById(rgPriority.getCheckedRadioButtonId())).getText().toString()
-        );
+        if (rgPriority.getCheckedRadioButtonId() > 0) {
+            itemToEdit.setPriority(
+                    ((RadioButton) rootView.findViewById(rgPriority.getCheckedRadioButtonId())).getText().toString()
+            );
+        }
 
         db.updateToDoItem(itemToEdit);
     }
