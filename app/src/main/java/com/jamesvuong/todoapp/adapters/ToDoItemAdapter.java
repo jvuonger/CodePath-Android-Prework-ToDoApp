@@ -2,54 +2,129 @@ package com.jamesvuong.todoapp.adapters;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.jamesvuong.todoapp.R;
 import com.jamesvuong.todoapp.models.ToDoItem;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+
 
 /**
  * Created by jvuonger on 9/17/16.
  */
-public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
+public class ToDoItemAdapter extends RecyclerView.Adapter<ToDoItemAdapter.ViewHolder> {
 
-    public ToDoItemAdapter(Context context, ArrayList<ToDoItem> toDoItems) {
-        super(context, 0, toDoItems);
+    public interface OnItemClickListener {
+        void onItemClicked(int position, ToDoItem item);
+        void onItemLongClick(int itemPosition, ToDoItem item) ;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        ToDoItem toDoItem = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.to_do_item, parent, false);
+    private static OnItemClickListener listener;
+
+    // ViewHolder Pattern
+    public static class ViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener{
+
+        private ToDoItem mToDoItem;
+        public TextView tvToDoItem;
+        public TextView tvDueDate;
+        public TextView tvPriority;
+
+        // We also create a constructor that accepts the entire item row
+        // and does the view lookups to find each subview
+        public ViewHolder(View itemView) {
+            // Stores the itemView in a public final member variable that can be used
+            // to access the context from any ViewHolder instance.
+            super(itemView);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+
+            tvToDoItem = (TextView) itemView.findViewById(R.id.tvToDoItemText);
+            tvDueDate = (TextView) itemView.findViewById(R.id.tvDueDate);
+            tvPriority = (TextView) itemView.findViewById(R.id.tvPriority);
         }
 
-        convertView.setTag(toDoItem);
+        @Override
+        public void onClick(View v) {
+            listener.onItemClicked(getAdapterPosition(),mToDoItem);
+        }
 
-        // Lookup view for data population
-        TextView tvToDoItem = (TextView) convertView.findViewById(R.id.tvToDoItemText);
-        TextView tvDueDate = (TextView) convertView.findViewById(R.id.tvDueDate);
-        TextView tvPriority = (TextView) convertView.findViewById(R.id.tvPriority);
-        // Populate the data into the template view using the data object
+        @Override
+        public boolean onLongClick(View v) {
+            listener.onItemLongClick(getAdapterPosition(),mToDoItem);
+            return true;
+        }
+
+        public void setToDoItem(ToDoItem toDoItem) {
+            mToDoItem = toDoItem;
+        }
+    }
+
+    // Store a member variable for the contacts
+    private List<ToDoItem> mToDoItems;
+    // Store the context for easy access
+    private Context mContext;
+
+    // Pass in the to do items array into the constructor
+    public ToDoItemAdapter(OnItemClickListener listener, Context context, List<ToDoItem> toDoItems) {
+        this.listener = listener;
+        mToDoItems = toDoItems;
+        mContext = context;
+    }
+
+    // Easy access to the context object in the recyclerview
+    private Context getContext() {
+        return mContext;
+    }
+
+    // Usually involves inflating a layout from XML and returning the holder
+    @Override
+    public ToDoItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        // Inflate the custom layout
+        View toDoItemView = inflater.inflate(R.layout.to_do_item, parent, false);
+
+        // Return a new holder instance
+        ViewHolder viewHolder = new ViewHolder(toDoItemView);
+        return viewHolder;
+    }
+
+    // Involves populating data into the item through holder
+    @Override
+    public void onBindViewHolder(ToDoItemAdapter.ViewHolder viewHolder, int position) {
+        // Get the data model based on position
+        ToDoItem toDoItem = mToDoItems.get(position);
+
+        viewHolder.setToDoItem(toDoItem);
+
+        // Set item views based on your views and data model
+        TextView tvToDoItem = viewHolder.tvToDoItem;
         tvToDoItem.setText(toDoItem.getToDoItem());
+
+        TextView tvDueDate = viewHolder.tvDueDate;
         tvDueDate.setText(getDateForView(toDoItem.getDueDateTime()));
+
+        TextView tvPriority = viewHolder.tvPriority;
         tvPriority.setText(toDoItem.getPriority());
 
-        // Style Priority Text
-        stylePriorityText(convertView.getContext(), tvPriority);
+        stylePriorityText(viewHolder.tvPriority.getContext(), tvPriority);
+    }
 
-        // Return the completed view to render on screen
-        return convertView;
+    // Returns the total count of items in the list
+    @Override
+    public int getItemCount() {
+        return mToDoItems.size();
     }
 
     private String getDateForView(long time) {

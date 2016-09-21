@@ -15,11 +15,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.jamesvuong.todoapp.R;
-import com.jamesvuong.todoapp.activities.MainActivity;
 import com.jamesvuong.todoapp.models.ToDoItem;
 import com.jamesvuong.todoapp.data.ToDoItemDbHelper;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -173,7 +171,7 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
             );
         }
 
-        db.updateToDoItem(itemToEdit);
+        db.updateOrAddToDoItem(itemToEdit);
     }
 
     private int getSelectedPriority(String priority) {

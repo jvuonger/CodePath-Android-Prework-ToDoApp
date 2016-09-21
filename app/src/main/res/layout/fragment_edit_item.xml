@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/etEditItemText" />
+            android:id="@+id/etEditItemText"
+            android:hint="To Do Item Name"/>
 
         <RadioGroup
             android:id="@+id/rgPriorityOptions"

@@ -4,7 +4,7 @@
 
 Submitted by: **James Vuong**
 
-Time spent: **14** hours spent in total
+Time spent: **22** hours spent in total
 
 ## User Stories
 
@@ -25,7 +25,9 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [x] Convert ListView to RecyclerView
+* [x] Implement Floating Action Button
+
 
 ## Video Walkthrough 
 
@@ -35,6 +37,10 @@ Here's a walkthrough of implemented user stories:
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
+# Notes
+* Converting the ListView to a RecyclerView was challenging, especially the lack of onClickListeners on items within a recyclerview
+* Customer Listeners is a slightly confusing topic
 
 
 ## License

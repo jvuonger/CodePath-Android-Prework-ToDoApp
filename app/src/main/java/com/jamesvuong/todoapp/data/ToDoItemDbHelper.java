@@ -165,6 +165,14 @@ public class ToDoItemDbHelper extends SQLiteOpenHelper {
         return item;
     }
 
+    public int updateOrAddToDoItem(ToDoItem item) {
+        if (item.getToDoId() < 0 ) {
+            return (int) this.addToDoItem(item);
+        } else {
+            return this.updateToDoItem(item);
+        }
+    }
+
     public int updateToDoItem(ToDoItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
 

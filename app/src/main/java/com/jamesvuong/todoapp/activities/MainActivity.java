@@ -1,12 +1,15 @@
 package com.jamesvuong.todoapp.activities;
 
 import android.app.FragmentManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import com.jamesvuong.todoapp.fragments.EditToDoItemDiaglogFragment;
 import com.jamesvuong.todoapp.R;
@@ -16,18 +19,44 @@ import com.jamesvuong.todoapp.data.ToDoItemDbHelper;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements EditToDoItemDiaglogFragment.EditToDoItemDiaglogListener {
+
+public class MainActivity
+        extends AppCompatActivity
+        implements  EditToDoItemDiaglogFragment.EditToDoItemDiaglogListener,
+                    ToDoItemAdapter.OnItemClickListener {
+
+    final static int NEW_TODO_ITEM = -1;
     final String TAG = "MainActivity";
     ArrayList<ToDoItem> toDoItems = new ArrayList<ToDoItem>();
     ToDoItemAdapter aToDoAdapter;
-    ListView lvItems;
     EditText etEditText;
     ToDoItemDbHelper db;
 
+    FloatingActionButton fabAddTodoItem;
+    RecyclerView rvItems;
+
+    // Edit DialogFragment Listener
     @Override
     public void onFinishEditDialog(int itemPosition, ToDoItem item) {
-        //update item name and save
-        toDoItems.set(itemPosition, db.getToDoItemById(item.getToDoId()));
+        // if itemPosition not -1, then update that item otherwise it's a new to do item
+        if (itemPosition == NEW_TODO_ITEM) {
+            toDoItems.add(item);
+        } else {
+            toDoItems.set(itemPosition, db.getToDoItemById(item.getToDoId()));
+        }
+        aToDoAdapter.notifyDataSetChanged();
+    }
+
+    // Recycler View Listeners
+    @Override
+    public void onItemClicked(int itemPosition, ToDoItem item) {
+        launchEditItemView(itemPosition, item);
+    }
+
+    @Override
+    public void onItemLongClick(int itemPosition, ToDoItem item) {
+        db.deleteToDoItem(item);
+        toDoItems.remove(itemPosition);
         aToDoAdapter.notifyDataSetChanged();
     }
 
@@ -41,52 +70,25 @@ public class MainActivity extends AppCompatActivity implements EditToDoItemDiagl
 
         db = ToDoItemDbHelper.getInstance(this);
 
-        populateArrayItems();
-        lvItems = (ListView) findViewById(R.id.lvItems);
-        lvItems.setAdapter(aToDoAdapter);
-        etEditText = (EditText) findViewById(R.id.etEditText);
-
-        // Edit item on click
-        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                launchEditItemView(position, (ToDoItem) view.getTag());
-            }
-        });
-
-        // Delete item on Long Click
-        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                db.deleteToDoItem((ToDoItem) view.getTag());
-                toDoItems.remove(position);
-                aToDoAdapter.notifyDataSetChanged();
-                return true;
-            }
-        });
-
-    }
-
-    public void populateArrayItems() {
         toDoItems = db.getAllToDoItems();
-        aToDoAdapter = new ToDoItemAdapter(this,toDoItems);
+        aToDoAdapter = new ToDoItemAdapter(this,this,toDoItems);
+
+        rvItems = (RecyclerView) findViewById(R.id.rvItems);
+        rvItems.setAdapter(aToDoAdapter);
+        rvItems.setLayoutManager(new LinearLayoutManager(this));
+
+        fabAddTodoItem = (FloatingActionButton) findViewById(R.id.fabAddTodoItem);
+        fabAddTodoItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchEditItemView(NEW_TODO_ITEM, new ToDoItem(""));
+            }
+        });
     }
-
-    public void onAddItem(View view) {
-        etEditText = (EditText) findViewById(R.id.etEditText);
-
-        ToDoItem newToDoItem = new ToDoItem();
-        newToDoItem.setToDoItem(etEditText.getText().toString());
-        newToDoItem.setToDoId((int) db.addToDoItem(newToDoItem));
-        aToDoAdapter.add(newToDoItem);
-        aToDoAdapter.notifyDataSetChanged();
-
-        etEditText.setText("");
-    }
-
+    
     public void launchEditItemView(int itemPosition, ToDoItem item) {
         FragmentManager fm = getFragmentManager();
         EditToDoItemDiaglogFragment dialogFragment = EditToDoItemDiaglogFragment.newInstance(itemPosition, item);
-        dialogFragment.show(fm, "Edit To Do Item Dialog Fragment");
+        dialogFragment.show(fm, "EditToDoItemDialogFragment");
     }
 }

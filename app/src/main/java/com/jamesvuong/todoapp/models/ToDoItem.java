@@ -1,6 +1,7 @@
 package com.jamesvuong.todoapp.models;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -11,7 +12,7 @@ import static com.jamesvuong.todoapp.R.id.etDueDate;
  * Created by jvuonger on 9/17/16.
  */
 public class ToDoItem {
-    private int mToDoId;
+    private int mToDoId = -1;
     private String mToDoItem;
     private Date mDueDate;
     private String mPriority;
@@ -107,4 +108,16 @@ public class ToDoItem {
         if (mNotes == null) return "";
         return mNotes;
     }
+
+//    private static int lastToDoItemId = 0;
+//
+//    public static ArrayList<ToDoItem> createToDoItemsList(int numToDoItems) {
+//        ArrayList<ToDoItem> toDoItems = new ArrayList<ToDoItem>();
+//
+//        for (int i = 1; i <= numToDoItems; i++) {
+//            toDoItems.add(new ToDoItem("Person " + ++lastToDoItemId, i <= numToDoItems / 2));
+//        }
+//
+//        return toDoItems;
+//    }
 }
