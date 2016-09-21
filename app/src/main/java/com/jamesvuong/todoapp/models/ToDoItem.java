@@ -1,7 +1,11 @@
 package com.jamesvuong.todoapp.models;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
+import static com.jamesvuong.todoapp.R.id.etDueDate;
 
 /**
  * Created by jvuonger on 9/17/16.
@@ -11,27 +15,33 @@ public class ToDoItem {
     private String mToDoItem;
     private Date mDueDate;
     private String mPriority;
+    private String mNotes;
 
     public ToDoItem() {
         mToDoItem = "";
     }
 
-    // To Do Items with no Due Date
     public ToDoItem(String toDoItem) {
         mToDoItem = toDoItem;
     }
 
-    // To Do Items with a Due Date
     public ToDoItem(String toDoItem, Date dueDate) {
         mToDoItem = toDoItem;
         mDueDate = dueDate;
     }
 
-    // To Do Items with a Due Date
     public ToDoItem(String toDoItem, Date dueDate, String priority) {
         mToDoItem = toDoItem;
         mDueDate = dueDate;
         mPriority = priority;
+    }
+
+    // To Do Items with a Due Date
+    public ToDoItem(String toDoItem, Date dueDate, String priority, String notes) {
+        mToDoItem = toDoItem;
+        mDueDate = dueDate;
+        mPriority = priority;
+        mNotes = notes;
     }
 
     public void setToDoId(int id) {
@@ -74,18 +84,27 @@ public class ToDoItem {
         }
     }
 
-    public Calendar getDueDateForDatePicker() {
+    public String getDueDateForEditText() {
         Calendar cal = Calendar.getInstance();
 
         if( mDueDate != null ) {
             cal.setTime(mDueDate);
         }
 
-        return cal;
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        return sdf.format(cal.getTime());
     }
 
     public String getPriority() {
         if (mPriority == null) return "";
         return mPriority;
+    }
+
+    public void setNotes(String notes) { mNotes = notes; }
+    public String getNotes() {
+        if (mNotes == null) return "";
+        return mNotes;
     }
 }

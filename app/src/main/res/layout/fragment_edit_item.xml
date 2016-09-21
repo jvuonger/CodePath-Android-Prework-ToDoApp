@@ -65,11 +65,13 @@
             android:text="@string/edit_due_date_header"
             android:id="@+id/tvDueDateHeader" />
 
-        <DatePicker
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/dpDueDate"
-            android:calendarViewShown="true" />
+            android:id="@+id/etDueDate"
+            android:inputType="date"
+            android:focusable="false"
+             />
 
         <LinearLayout
             android:id="@+id/edit_buttons_container"

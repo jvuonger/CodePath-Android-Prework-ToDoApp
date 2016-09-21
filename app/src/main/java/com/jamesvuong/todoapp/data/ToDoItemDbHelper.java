@@ -23,7 +23,7 @@ public class ToDoItemDbHelper extends SQLiteOpenHelper {
 
     // Database Info
     private static final String DATABASE_NAME = "toDoDatabase";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     // Table Names
     private static final String TABLE_TODOITEMS = "todoItems";
@@ -33,6 +33,7 @@ public class ToDoItemDbHelper extends SQLiteOpenHelper {
     private static final String KEY_TODOITEM_NAME = "itemName";
     private static final String KEY_TODOITEM_DUEDATE = "dueDate";
     private static final String KEY_TODOITEM_PRIORITY = "priority";
+    private static final String KEY_TODOITEM_NOTES = "notes";
 
     // Singleton Method
     public static synchronized ToDoItemDbHelper getInstance(Context context) {
@@ -64,7 +65,8 @@ public class ToDoItemDbHelper extends SQLiteOpenHelper {
                     KEY_TODOITEM_ID + " INTEGER PRIMARY KEY," + // Define Primary Key
                     KEY_TODOITEM_NAME + " TEXT," +
                     KEY_TODOITEM_DUEDATE + " TEXT," +
-                    KEY_TODOITEM_PRIORITY + " TEXT" +
+                    KEY_TODOITEM_PRIORITY + " TEXT," +
+                    KEY_TODOITEM_NOTES + " TEXT" +
                 ")";
 
         db.execSQL(CREATE_TODO_TABLE);
@@ -90,6 +92,7 @@ public class ToDoItemDbHelper extends SQLiteOpenHelper {
             values.put(KEY_TODOITEM_NAME, item.getToDoItem());
             values.put(KEY_TODOITEM_DUEDATE, item.getDueDateTime());
             values.put(KEY_TODOITEM_PRIORITY, item.getPriority());
+            values.put(KEY_TODOITEM_NOTES, item.getNotes());
 
             id = db.insertOrThrow(TABLE_TODOITEMS, null, values);
             db.setTransactionSuccessful();
@@ -119,6 +122,7 @@ public class ToDoItemDbHelper extends SQLiteOpenHelper {
                     newToDoItem.setToDoItem(cursor.getString(cursor.getColumnIndex(KEY_TODOITEM_NAME)));
                     newToDoItem.setDueDate(new Date(cursor.getLong(cursor.getColumnIndex(KEY_TODOITEM_DUEDATE))));
                     newToDoItem.setPriority(cursor.getString(cursor.getColumnIndex(KEY_TODOITEM_PRIORITY)));
+                    newToDoItem.setNotes(cursor.getString(cursor.getColumnIndex(KEY_TODOITEM_NOTES)));
 
                     toDoItems.add(newToDoItem);
                 } while(cursor.moveToNext());
@@ -148,6 +152,7 @@ public class ToDoItemDbHelper extends SQLiteOpenHelper {
                 item.setToDoItem(cursor.getString(cursor.getColumnIndex(KEY_TODOITEM_NAME)));
                 item.setDueDate(new Date(cursor.getLong(cursor.getColumnIndex(KEY_TODOITEM_DUEDATE))));
                 item.setPriority(cursor.getString(cursor.getColumnIndex(KEY_TODOITEM_PRIORITY)));
+                item.setNotes(cursor.getString(cursor.getColumnIndex(KEY_TODOITEM_NOTES)));
             }
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to get item: " + id);
@@ -167,6 +172,7 @@ public class ToDoItemDbHelper extends SQLiteOpenHelper {
         values.put(KEY_TODOITEM_NAME, item.getToDoItem());
         values.put(KEY_TODOITEM_DUEDATE, item.getDueDateTime());
         values.put(KEY_TODOITEM_PRIORITY, item.getPriority());
+        values.put(KEY_TODOITEM_NOTES, item.getNotes());
 
         return db.update(TABLE_TODOITEMS, values, KEY_TODOITEM_ID + " = ?",
                 new String[] { String.valueOf(item.getToDoId()) });

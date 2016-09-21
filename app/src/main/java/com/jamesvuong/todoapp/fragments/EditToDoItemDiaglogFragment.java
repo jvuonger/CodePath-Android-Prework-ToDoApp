@@ -1,5 +1,6 @@
 package com.jamesvuong.todoapp.fragments;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -14,10 +15,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.jamesvuong.todoapp.R;
+import com.jamesvuong.todoapp.activities.MainActivity;
 import com.jamesvuong.todoapp.models.ToDoItem;
 import com.jamesvuong.todoapp.data.ToDoItemDbHelper;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by jvuonger on 9/19/16.
@@ -29,13 +36,16 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
     View rootView;
     ToDoItem itemToEdit;
     EditText etEditItemText;
-    DatePicker dpDueDate;
+    EditText etDueDate;
     RadioGroup rgPriority;
 
     int itemId;
     int itemPosition;
 
     EditToDoItemDiaglogListener listener;
+
+    final Calendar myCalendar = Calendar.getInstance();
+
 
     // Defines the listener interface with a method passing back data result
     public interface EditToDoItemDiaglogListener {
@@ -77,16 +87,22 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
         etEditItemText.setSelection(etEditItemText.getText().length());
 
         // Set Due Date
-        dpDueDate = (DatePicker) rootView.findViewById(R.id.dpDueDate);
+        etDueDate = (EditText) rootView.findViewById(R.id.etDueDate);
 
         Calendar c = Calendar.getInstance();
         if (itemToEdit.getDueDateTime() > 0) {
-            c = itemToEdit.getDueDateForDatePicker();
-            dpDueDate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-        } else {
-            dpDueDate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-            dpDueDate.setMinDate(c.getTimeInMillis()); // Set min due date to today
+            etDueDate.setText(itemToEdit.getDueDateForEditText());
         }
+
+        // Set Due Date Calendar Dialog On Click
+        etDueDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(rootView.getContext(), date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         // Set RadioGroup
         rgPriority = (RadioGroup) rootView.findViewById(R.id.rgPriorityOptions);
@@ -141,16 +157,14 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
 
         // To do item
         itemToEdit.setToDoItem(etEditItemText.getText().toString());
-
-        // Get date object from date picker
-        int day = dpDueDate.getDayOfMonth();
-        int month = dpDueDate.getMonth();
-        int year =  dpDueDate.getYear();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-
-        itemToEdit.setDueDate(calendar.getTime());
+        Date dueDate = null;
+        SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
+        try {
+            dueDate = f.parse(etDueDate.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        itemToEdit.setDueDate(dueDate);
 
         // Priority
         if (rgPriority.getCheckedRadioButtonId() > 0) {
@@ -163,11 +177,34 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
     }
 
     private int getSelectedPriority(String priority) {
-        switch(priority.toLowerCase()) {
-            case "low": return R.id.rbLowPriority;
-            case "medium":return R.id.rbMediumPriority;
-            case "high": return R.id.rbHighPriority;
-            default: return -1;
+        switch (priority.toLowerCase()) {
+            case "low":
+                return R.id.rbLowPriority;
+            case "medium":
+                return R.id.rbMediumPriority;
+            case "high":
+                return R.id.rbHighPriority;
+            default:
+                return -1;
         }
     }
+
+    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateDueDate();
+        }
+    };
+
+    private void updateDueDate() {
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        etDueDate.setText(sdf.format(myCalendar.getTime()));
+    }
+
+
 }
