@@ -29,7 +29,6 @@ public class MainActivity
     final String TAG = "MainActivity";
     ArrayList<ToDoItem> toDoItems = new ArrayList<ToDoItem>();
     ToDoItemAdapter aToDoAdapter;
-    EditText etEditText;
     ToDoItemDbHelper db;
 
     FloatingActionButton fabAddTodoItem;
@@ -85,7 +84,7 @@ public class MainActivity
             }
         });
     }
-    
+
     public void launchEditItemView(int itemPosition, ToDoItem item) {
         FragmentManager fm = getFragmentManager();
         EditToDoItemDiaglogFragment dialogFragment = EditToDoItemDiaglogFragment.newInstance(itemPosition, item);
