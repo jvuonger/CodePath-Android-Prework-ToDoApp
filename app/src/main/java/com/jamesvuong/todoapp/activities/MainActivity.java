@@ -40,10 +40,11 @@ public class MainActivity
         // if itemPosition not -1, then update that item otherwise it's a new to do item
         if (itemPosition == NEW_TODO_ITEM) {
             toDoItems.add(item);
+            aToDoAdapter.notifyItemInserted(toDoItems.size() - 1);
         } else {
             toDoItems.set(itemPosition, db.getToDoItemById(item.getToDoId()));
+            aToDoAdapter.notifyItemChanged(itemPosition);
         }
-        aToDoAdapter.notifyDataSetChanged();
     }
 
     // Recycler View Listeners
@@ -56,7 +57,7 @@ public class MainActivity
     public void onItemLongClick(int itemPosition, ToDoItem item) {
         db.deleteToDoItem(item);
         toDoItems.remove(itemPosition);
-        aToDoAdapter.notifyDataSetChanged();
+        aToDoAdapter.notifyItemRemoved(itemPosition);
     }
 
     @Override

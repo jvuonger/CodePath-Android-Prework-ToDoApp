@@ -109,15 +109,14 @@ public class ToDoItem {
         return mNotes;
     }
 
-//    private static int lastToDoItemId = 0;
-//
-//    public static ArrayList<ToDoItem> createToDoItemsList(int numToDoItems) {
-//        ArrayList<ToDoItem> toDoItems = new ArrayList<ToDoItem>();
-//
-//        for (int i = 1; i <= numToDoItems; i++) {
-//            toDoItems.add(new ToDoItem("Person " + ++lastToDoItemId, i <= numToDoItems / 2));
-//        }
-//
-//        return toDoItems;
-//    }
+    @Override
+    public String toString() {
+        return "ToDoItem {" +
+                    "\n\t ID: " + mToDoId +
+                    "\n\t ID: " + mToDoItem +
+                    "\n\t ID: " + mDueDate +
+                    "\n\t ID: " + mPriority +
+                    "\n\t ID: " + mNotes +
+                "}";
+    }
 }

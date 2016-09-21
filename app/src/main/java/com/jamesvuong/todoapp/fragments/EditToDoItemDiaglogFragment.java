@@ -171,7 +171,11 @@ public class EditToDoItemDiaglogFragment extends DialogFragment {
             );
         }
 
-        itemToEdit.setToDoId(db.updateOrAddToDoItem(itemToEdit));
+        int newToDoId = db.updateOrAddToDoItem(itemToEdit);
+
+        if(itemToEdit.getToDoId() < 0){
+            itemToEdit.setToDoId(newToDoId);
+        }
     }
 
     private int getSelectedPriority(String priority) {

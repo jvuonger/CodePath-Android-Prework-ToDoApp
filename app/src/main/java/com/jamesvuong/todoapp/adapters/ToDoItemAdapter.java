@@ -3,6 +3,7 @@ package com.jamesvuong.todoapp.adapters;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -107,6 +110,7 @@ public class ToDoItemAdapter extends RecyclerView.Adapter<ToDoItemAdapter.ViewHo
         ToDoItem toDoItem = mToDoItems.get(position);
 
         viewHolder.setToDoItem(toDoItem);
+        Log.i(TAG, " Set Position " + position + " - " + toDoItem);
 
         // Set item views based on your views and data model
         TextView tvToDoItem = viewHolder.tvToDoItem;
