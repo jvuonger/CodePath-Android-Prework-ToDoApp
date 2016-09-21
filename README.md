@@ -4,7 +4,7 @@
 
 Submitted by: **James Vuong**
 
-Time spent: **22** hours spent in total
+Time spent: **24** hours spent in total
 
 ## User Stories
 
@@ -27,6 +27,7 @@ The following **additional** features are implemented:
 
 * [x] Convert ListView to RecyclerView
 * [x] Implement Floating Action Button
+* [x] Implement ScrollAware Floating Action Behavior
 
 
 ## Video Walkthrough 
