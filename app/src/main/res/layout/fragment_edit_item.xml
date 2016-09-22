@@ -41,21 +41,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Low" />
+                android:text="@string/low_priority" />
 
             <RadioButton
                 android:id="@+id/rbMediumPriority"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Medium" />
+                android:text="@string/medium_priority" />
 
             <RadioButton
                 android:id="@+id/rbHighPriority"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="High" />
+                android:text="@string/high_priority" />
 
         </RadioGroup>
 

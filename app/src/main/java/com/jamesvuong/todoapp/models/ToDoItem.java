@@ -109,6 +109,10 @@ public class ToDoItem {
         return mNotes;
     }
 
+    public boolean hasPriority() {
+        return !mPriority.equals("");
+    }
+
     @Override
     public String toString() {
         return "ToDoItem {" +

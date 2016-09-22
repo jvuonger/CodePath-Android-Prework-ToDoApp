@@ -35,17 +35,22 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/tvPriority"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"
             android:text="Priority"
             android:textStyle="bold"
-            android:textAlignment="center"
-            android:gravity="center"/>
+            android:textColor="@android:color/white"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="1dp"
+            android:textAlignment="center"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -16,6 +16,7 @@ import com.jamesvuong.todoapp.R;
 import com.jamesvuong.todoapp.models.ToDoItem;
 import com.jamesvuong.todoapp.adapters.ToDoItemAdapter;
 import com.jamesvuong.todoapp.data.ToDoItemDbHelper;
+import com.jamesvuong.todoapp.ui.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -76,6 +77,7 @@ public class MainActivity
         rvItems = (RecyclerView) findViewById(R.id.rvItems);
         rvItems.setAdapter(aToDoAdapter);
         rvItems.setLayoutManager(new LinearLayoutManager(this));
+        rvItems.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         fabAddTodoItem = (FloatingActionButton) findViewById(R.id.fabAddTodoItem);
         fabAddTodoItem.setOnClickListener(new View.OnClickListener() {

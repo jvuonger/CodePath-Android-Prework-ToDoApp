@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
+import static com.jamesvuong.todoapp.R.id.tvPriority;
 
 
 /**
@@ -111,7 +112,6 @@ public class ToDoItemAdapter extends RecyclerView.Adapter<ToDoItemAdapter.ViewHo
         ToDoItem toDoItem = mToDoItems.get(position);
 
         viewHolder.setToDoItem(toDoItem);
-        Log.i(TAG, " Set Position " + position + " - " + toDoItem);
 
         // Set item views based on your views and data model
         TextView tvToDoItem = viewHolder.tvToDoItem;
@@ -121,9 +121,13 @@ public class ToDoItemAdapter extends RecyclerView.Adapter<ToDoItemAdapter.ViewHo
         tvDueDate.setText(getDateForView(toDoItem.getDueDateTime()));
 
         TextView tvPriority = viewHolder.tvPriority;
-        tvPriority.setText(toDoItem.getPriority());
-
-        stylePriorityText(viewHolder.tvPriority.getContext(), tvPriority);
+        if( toDoItem.hasPriority() ) {
+            tvPriority.setText(toDoItem.getPriority());
+            stylePriorityText(viewHolder.tvPriority.getContext(), tvPriority);
+            tvPriority.setVisibility(View.VISIBLE);
+        } else {
+            tvPriority.setVisibility(View.GONE);
+        }
     }
 
     // Returns the total count of items in the list
@@ -153,7 +157,7 @@ public class ToDoItemAdapter extends RecyclerView.Adapter<ToDoItemAdapter.ViewHo
                 break;
         }
 
-        tvPriority.setTextColor(ContextCompat.getColor(context, textColor));
+        tvPriority.setBackgroundColor(ContextCompat.getColor(context, textColor));
     }
 
 }
