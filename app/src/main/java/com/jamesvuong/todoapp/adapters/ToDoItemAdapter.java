@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.jamesvuong.todoapp.R;
 import com.jamesvuong.todoapp.models.ToDoItem;
+import com.jamesvuong.todoapp.utils.TimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -134,13 +135,9 @@ public class ToDoItemAdapter extends RecyclerView.Adapter<ToDoItemAdapter.ViewHo
     private String getDateForView(long time) {
         if (time == -1 ) return "";
 
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(time);
+        String date = TimeUtils.formatHumanFriendlyShortDate(getContext(), time);
 
-        SimpleDateFormat fmtOut = new SimpleDateFormat("MMM dd, yyyy");
-        String date = "Due: " + fmtOut.format(cal.getTime());
-
-        return date;
+        return "Due " + date;
     }
 
     private void stylePriorityText(Context context, TextView tvPriority) {

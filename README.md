@@ -28,6 +28,7 @@ The following **additional** features are implemented:
 * [x] Convert ListView to RecyclerView
 * [x] Implement Floating Action Button
 * [x] Implement ScrollAware Floating Action Behavior
+* [x] Relative time for due date ( today, tomorrow, yesterday, days ago, in X days)
 
 
 ## Video Walkthrough 
