@@ -4,7 +4,7 @@
 
 Submitted by: **James Vuong**
 
-Time spent: **24** hours spent in total
+Time spent: **26** hours spent in total
 
 ## User Stories
 
@@ -35,7 +35,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://raw.githubusercontent.com/jvuonger/CodePath-Android-Prework-ToDoApp/master/screenCapture_4.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://raw.githubusercontent.com/jvuonger/CodePath-Android-Prework-ToDoApp/master/screenCapture_5.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
